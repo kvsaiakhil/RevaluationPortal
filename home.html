@@ -1,0 +1,86 @@
+<html>
+
+<head>
+<title>Revaluation Application</title>
+
+<link rel="stylesheet" type="text/css" href="stylehome.css" />
+
+</head>
+
+<body>
+<script src="validate.js"></script>
+<div class="header">
+<div class="logo">
+<a href="http://www.bmsce.ac.in/" target="_blank">
+<img src="BMS_logo.png" height="70px" width="65px" alt="BMSCE" />
+</a>
+</div>
+<h1 style="position:absolute;left:525px;top:10px;">BMS College of Engineering<br/><h5 style="position:absolute;left:625px;top:55px;">( Autonomous College Under VTU )</h5></h1><br/>
+
+</div>
+<br/>
+<div class="h1">
+<h1 align="center">Application for revaluation</h1>
+</div>
+<br/><br/>
+
+<ul>
+  <li><a href="front.html">Home</a></li>
+  <li><a href="http://www.bmsce.in/about-us-0" target="_blank" >About</a></li>
+  <li><a href="login.html">Login</a></li>
+  <li><a href="contact.html">Contact</a></li>
+</ul>
+
+
+<form name="details" action="homedata.php" method="POST" autocomplete="off" >
+
+<legend>
+ <strong style="color:white;">Name</strong>
+</legend>
+<label id="name" class="form-element"><input type="text" name="name" onblur="validatename()" required ><br/><br/></label>
+<legend>
+ <strong style="color:white;">USN</strong>
+</legend>
+<label id="usn" class="form-element"><input type="text" name="usn" id="usn" onblur="validate()" maxlength="10" required /><br/><br/></label>
+<br/>
+<legend>
+ <strong style="color:white;">Semester</strong>
+</legend>
+<label id="sem"><select name="sem" required>
+		<option value="I">I</option>
+		<option value="II">II</option>
+		<option value="III">III</option>
+		<option value="IV">IV</option>
+		<option value="V">V</option>
+		<option value="VI">VI</option>
+		<option value="VII">VII</option>
+		<option value="VIII">VIII</option>
+	 </select></label><br/>
+<br/>
+<legend>
+ <strong style="color:white;">Branch</strong>
+</legend>
+<label id="branch"><select name="branch" required>
+	     <option value="CSE">Computer Science and Engineering</option>
+		 <option value="ISE">Information Science and Engineering</option>
+		 <option value="ECE">Electronics and Communication Engineering</option>
+
+	  </select></label><br/>
+<br/>
+<legend>
+ <strong style="color:white;">Mobile Number</strong>
+</legend>
+<label id="phn"><input type="tel" name="phn" onblur="validatemn()" required /><br/></label>
+<br/>
+<legend>
+ <strong style="color:white;">Email</strong>
+</legend>
+<label id="email"><input type="email" name="email" required /></label>
+<br/><br/>
+<br/><br/>
+<input class="rcorners1" type="submit" value="Submit" />
+<input class="rcorners1" type="reset" value="Clear" />
+</form>
+
+</body>
+</html>

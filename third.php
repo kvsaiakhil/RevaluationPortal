@@ -67,27 +67,34 @@
 
 	$checkbox1=$_POST['check'];
 	$type=$_POST['type'];
-	print_r($type);
+	//print_r($type);
 
-	
-/*
+
+
 	$s=implode($checkbox1);
 	$t=trim($s,"|");
 	$a=explode("|",$t);
+	//print($type);
 
 
 
 	if($checkbox1)
 	{
 
-	$dbc=mysqli_connect("127.0.0.1:3307","root","");
+	//$dbc=mysqli_connect("127.0.0.1:3306","root","");
 
-	if(!$dbc)
-	exit("Database error");
+	//if(!$dbc)
+//	exit("Database error");
 
-	$dbser=mysqli_select_db($dbc,"homedata");
-	if(!$dbser)
-		exit("Error selecting database");
+$mdb=new MongoDB\Driver\Manager("mongodb://localhost");
+if(!$mdb)
+exit("Database error");
+
+	//$dbser=mysqli_select_db($dbc,"homedata");
+//	if(!$dbser)
+//		exit("Error selecting database");
+
+
 
 		date_default_timezone_set("Asia/Kolkata");
 
@@ -95,12 +102,27 @@
 
 				for($i=0,$j=1;$i<count($a);$i=$i+2,$j=$j+2)
 				{
-       $sql ="INSERT INTO applydata VALUES ('".$_SESSION['name']."','".$_SESSION['usn']."','".$_SESSION['branch']."','".$_SESSION['sem']."','$a[$j]','$a[$i]','".date('y/m/d h:i:sa')."')";
-	   $result=mysqli_query($dbc,$sql);
-		 if(!$result)
-		 	{
-				exit("Error entry");
-			}
+      // $sql ="INSERT INTO applydata VALUES ('".$_SESSION['name']."','".$_SESSION['usn']."','".$_SESSION['branch']."','".$_SESSION['sem']."','$a[$j]','$a[$i]','".date('y/m/d h:i:sa')."')";
+	   //$result=mysqli_query($dbc,$sql);
+		// print("test");
+		 $doc = array(
+			 "name" => $_SESSION['name'],
+			 "usn" => $_SESSION['usn'],
+			 "branch" => $_SESSION['branch'],
+			 "sem" => $_SESSION['sem'],
+			 "subname" => $a[$j],
+			 "subcode" => $a[$i],
+			 "type" => $type,
+			 "date" => date("Y-m-d"),
+		 );
+		 $insert = new MongoDB\Driver\BulkWrite;
+		$insert->insert($doc);
+		$mdb->executeBulkWrite('reval.applydata', $insert);
+
+		 // if(!$result)
+		 // 	{
+			// 	exit("Error entry");
+			// }
 		}
 }
 
@@ -110,11 +132,11 @@
 		header('refresh:0;url=/second.php');
 		exit;
 	}
-	$dbc->close();
+//	$dbc->close();
 
 session_destroy();
 
-*/
+
 ?>
 
 <br/><br/><br/>

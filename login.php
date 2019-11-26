@@ -37,6 +37,12 @@
 <br/>
 <br/>
 
+<button type="button" class="button" style="position:relative; left:45%;" onclick="location.href='/front.html';">Exit</button>
+<br/>
+<br/>
+<br/>
+<br/>
+
 <?php
 if(isset($_POST["name"], $_POST["pass"]))
   {
@@ -51,27 +57,54 @@ if(isset($_POST["name"], $_POST["pass"]))
       }
     else
       {
-        $dbc=mysqli_connect("127.0.0.1:3307","root","","homedata");
+      //  $dbc=mysqli_connect("127.0.0.1:3306","root","","homedata");
 
-      	if(!$dbc)
-      	exit("Database error");
+      //	if(!$dbc)
+      //	exit("Database error");
 
-      	$dbser=mysqli_select_db($dbc,"homedata");
+      //	$dbser=mysqli_select_db($dbc,"homedata");
 
-      	if(!$dbser)
-      	exit("Error selecting database");
+    //  	if(!$dbser)
+    //  	exit("Error selecting database");
 
-           $sql ="SELECT * FROM applydata ORDER BY subcode";
-      	   $result=$dbc->query($sql);
+    //       $sql ="SELECT * FROM applydata ORDER BY subcode";
+      //	   $result=$dbc->query($sql);
+
+      $mdb=new MongoDB\Driver\Manager("mongodb://localhost");
+
+      if(!$mdb)
+      exit("Database error");
+
+
+      $table = 'reval.applydata';
+
+      $filter = [
+          //'name' => "Suhas"
+      ];
+      $options = [
+        //'limit' => 2,
+          //'skip' => 2,
+        'sort' => ['date' => -1],
+        //'projection' => ['name' => 1, 'usn' => 1, 'date' => 1],
+      ];
+
+      $query = new MongoDB\Driver\Query($filter, $options);
+      $result = $mdb->executeQuery($table, $query);
+
+      $result->setTypeMap(['root' => 'array', 'document' => 'array', 'array' => 'array']);
+
+
       	   if(!$result)
       	{
       	exit("Error Table");
       	}
 
-      	if($result->num_rows>0)
-      	{
+      	//if($result->num_rows>0)
+        if($result)
+        {
       	echo "<table align='center'><tr><th>Name</th><th>USN</th><th>Branch</th><th>Sem</th><th>Subject Name</th><th>Subject Code</th><th>Type</th><th>Time</th></tr>";
-      	for($i=1;$row=$result->fetch_assoc();$i++)
+      //	for($i=1;$row=$result->fetch_assoc();$i++)
+      foreach($result as $row)
       	{
       		echo "<tr align='center'><td>" .$row['name']. "</td><td>" .$row["usn"]. "</td><td>" .$row["branch"]. "</td><td>" .$row["sem"]. "</td><td>" .$row["subname"]. "</td><td>" .$row["subcode"]. "</td><td>" .$row['type']. "</td><td>" .$row['date']. "</td></tr>";
       	}
@@ -83,7 +116,7 @@ if(isset($_POST["name"], $_POST["pass"]))
           print("<script type='text/javascript'>alert('Database Empty')</script>");
           exit(header("refresh:0;url=login.html"));
         }
-          $dbc->close();
+          //$dbc->close();
 
       }
 
@@ -91,7 +124,7 @@ if(isset($_POST["name"], $_POST["pass"]))
 }
  ?>
 <br/><br/><br/><br/>
-<button type="button" class="button" style="position:relative; left:45%;" onclick="location.href='/front.html';">Exit</button>
+
 
 </body>
 </html>

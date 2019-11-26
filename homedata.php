@@ -24,23 +24,43 @@
 
 	//db connectn and insertn of form data
 
-	$dbc=mysqli_connect("127.0.0.1:3307","root","","homedata");
+	//$dbc=mysqli_connect("127.0.0.1:3307","root","","homedata");
+	//if(!$dbc)
+	//exit("Database error");
 
-	if(!$dbc)
+  $mdb=new MongoDB\Driver\Manager("mongodb://localhost");
+  if(!$mdb)
 	exit("Database error");
 
-	$dbser=mysqli_select_db($dbc,"homedata");
+//  $dbc = $mdb->reval->test;
+  //if(!$dbc)
+	//exit("Error selecting database");
 
-	if(!$dbser)
-	exit("Error selecting database");
+	//$dbser=mysqli_select_db($dbc,"homedata");
 
-       $sql ="INSERT INTO homedata VALUES ('$user_name','$susn','$sems','$sbranch','$mobno','$mail')";
-	   $result=$dbc->query($sql);
+	//if(!$dbser)
+	//exit("Error selecting database");
+  $insert = new MongoDB\Driver\BulkWrite;
+
+     //$sql ="INSERT INTO homedata VALUES ('$user_name','$susn','$sems','$sbranch','$mobno','$mail')";
+	   //$result=$dbc->query($sql);
+
+     $doc = array(
+       "name" => $user_name,
+       "usn" => $susn,
+       "sems" => $sems,
+       "branch" => $sbranch,
+       "mobno" => $mobno,
+       "mailid" => $mail
+     );
+
+     $insert->insert($doc);
+     $result = $mdb->executeBulkWrite('reval.homedata', $insert);
 	   if(!$result)
 	{
 	exit("Error entry");
 	}
-    $dbc->close();
+    //$dbc->close();
 
 
 	include 'second.php';
